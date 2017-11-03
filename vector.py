@@ -88,6 +88,21 @@ class Vector(object):
         projection_onto_base = self.projection_onto_base(base)
         return self.minus(projection_onto_base)
 
+    def cross(self, v):
+        x_1, y_1, z_1 = self.coordinates
+        x_2, y_2, z_2 = v.coordinates
+        new_coordinates = [ y_1*z_2 - y_2*z_1,
+                          -(x_1*z_2 - x_2*z_1),
+                          x_1*y_2 - x_2*y_1 ]
+        return Vector(new_coordinates)
+
+    def area_of_parallelogram_with(self, v):
+        cross_product = self.cross(v)
+        return cross_product.magnitude()
+
+    def area_of_triangle_with(self, v):
+        return self.area_of_parallelogram_with(v) / Decimal('2.0')
+
     def __str__(self):
         return 'Vector: {}'.format(self.coordinates)
 
@@ -96,12 +111,13 @@ class Vector(object):
         return self.coordinates == v.coordinates
 
 
-a = Vector([3.039, 1.879])
-b = Vector([0.825, 2.036])
-c = Vector([-9.88, -3.264, -8.159])
-d = Vector([-2.155, -9.353, -9.473])
-# e = Vector([-2.328, -7.284, -1.214])
-# f = Vector([-1.821, 1.072, -2.94])
+
+a = Vector([8.462, 7.893, -8.187])
+b = Vector([6.984, -5.975, 4.778])
+c = Vector([-8.987, -9.838, 5.031])
+d = Vector([-4.268, -1.861, -8.866])
+e = Vector([1.5, 9.547, 3.691])
+f = Vector([-6.007, 0.124, 5.772])
 # g = Vector([2.118, 4.827])
 # h = Vector([0, 0])
 
@@ -114,8 +130,10 @@ d = Vector([-2.155, -9.353, -9.473])
 # g = Vector([7.35, 0.221, 5.188])
 # h = Vector([2.751, 8.259, 3.985])
 
-print(a.projection_onto_base(b))
-print(c.component_orth_to_base(d))
+print(a.cross(b))
+print(c.area_of_parallelogram_with(d))
+print(e.area_of_triangle_with(f))
+
 # print(c.is_parallel_to(d))
 # print(c.is_orthogonal_to(d))
 # print(e.is_parallel_to(f))
